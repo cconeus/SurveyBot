@@ -5,43 +5,16 @@
   <title>Survey App</title>
   <script src="lib/angular.js"></script>
   <script src="app.js"></script>
-  <script src="controllers/question1Controller.js"></script>
-  <script src="controllers/question2Controller.js"></script>
+  <script src="controllers/questionsController.js"></script>
+  <!--  <script src="controllers/question2Controller.js"></script> -->
   <script src="services/QuestionsFactory.js"></script>
   <link rel="stylesheet" href="css/bootstrap.css">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <div class="container">
-    <div ng-controller="Question1Controller">
-      <!-- <div class="row" ng-show="answers.length">
-        <div class="col-md-12">
-          <h4>Show Answers</h4>
-          <form class="form-inline" role="form">
-            <div class="form-group">
-              <input ng-model="query.answer" type="text" id="quest1-answer" class="form-control" placeholder="Search">
-            </div>
-          </form>
-        </div>
-      </div> -->
-      <div class="row">
-        <div class="col-md-12">
-          <h2 ng-show="answers.length > 4">Question 1 Answer List</h2>
-          <p ng-show="answers.length > 4">{{ QuestionsFactory.question1 }}</p>
-          <ul>
-            <li ng-show="answers.length > 4" ng-repeat="item in filtered = (answers | filter:query )">
-              <span ng-click="editing = true" ng-hide="editing">
-                {{item.text}} <a ng-click="QuestionsFactory.deleteAnswer(item)">Delete</a>
-              </span>
-              <span class="form-group" ng-show="editing" ng-submit="editing = false">
-                <form class="form-inline" role="form">
-                  <input type="text" class="form-control input-sm" ng-model="item.name" placeholder="Name" required/>
-                  <button class="btn btn-default btn-small" type="submit">Save</button>
-                </form>
-              </span>
-            </li>
-          </ul>
-        </div>
+  <div ng-model="survey" class="container">
+    <div ng-controller="QuestionsController">
+      <div class="row" >
         <div class="col-md-4">
           <h2>Question 1</h2>
           <form ng-submit="QuestionsFactory.addQuestion1Answer()" class="form-inline" role="form">
@@ -49,35 +22,13 @@
               <label for="quest1answer" id="question">{{ QuestionsFactory.question1 }}</label><br />
               <input type="text" ng-model="QuestionsFactory.quest1answer" class="form-control" id="quest1answer" placeholder="Enter answer">
             </div>
-            <button type="submit" class="btn btn-default">Submit</button>
+            <!-- <button type="submit" class="btn btn-default">Submit</button> -->
           </form>
         </div>
-      </div>
-    </div>
-
-<!-- ////////////////// Question 2 ///////////////////////////////////////// -->
-    <div ng-controller="Question2Controller">
-      <div class="row">
-        <div class="col-md-12">
-          <h2 ng-show="answers.length > 4">Question 2 Answer List</h2>
-          <p ng-show="answers.length > 4">{{ QuestionsFactory.question2 }}</p>
-          <ul>
-            <li ng-show="answers.length > 4" ng-repeat="item in filtered = (answers | filter:query )">
-              <span ng-click="editing = true" ng-hide="editing">
-                {{ item.text }} <a ng-click="QuestionsFactory.deleteAnswer(item)">Delete</a>
-              </span>
-              <span class="form-group" ng-show="editing" ng-submit="editing = false">
-                <form class="form-inline" role="form">
-                  <input type="text" class="form-control input-sm" ng-model="item.name" placeholder="Name" required/>
-                  <button class="btn btn-default btn-small" type="submit">Save</button>
-                </form>
-              </span>
-            </li>
-          </ul>
-        </div>
+  <!-- ////////////////// Question 2 ///////////////////////////////////////// -->
         <div class="col-md-4">
           <h2>Question 2</h2>
-          <form ng-submit="QuestionsFactory.addQuestion2Answer()" class="form-inline" role="form">
+          <form ng-submit="QuestionsFactory.addAnswers()" class="form-inline" role="form">
             <div class="form-group">
               <label for="quest2answer" id="question">{{ QuestionsFactory.question2 }}</label><br />
               <input type="text" ng-model="QuestionsFactory.quest2answer" class="form-control" id="quest2answer" placeholder="Enter answer">
@@ -86,27 +37,60 @@
           </form>
         </div>
       </div>
+<!-- show up when user clicks show results button -->
+      <div  ng-show="showResults">
+        <span ng-show="answers1.length > 4 && answers2.length > 4">
+          <div align="center" class="col-md-4">
+
+            <h2 id="centered" ng-show="answers1.length">Question 1 Answer List</h2>
+            <p id="centered" ng-show="answers1.length">{{ QuestionsFactory.question1 }}</p>
+            <ul id="centered">
+              <li ng-repeat="item1 in answers1">{{ item1.text }}</li>
+            </ul>
+
+            <h2 id="centered" ng-show="answers2.length">Question 2 Answer List</h2>
+            <p id="centered" ng-show="answers2.length">{{ QuestionsFactory.question2 }}</p>
+            <ul id="centered">
+              <li ng-repeat="item2 in answers2">{{ item2.text }}</li>
+            </ul>
+          </div>
+        </span>
+      </div>
+      <button ng-click="showResults = !showResults" ng-show="answers1.length > 4 && answers2.length > 4" type="submit">Show Results</button>
+
     </div>
   </div>
 </body>
 </html>
+<!-- =/=/=/=/=/=/=/=/=/=/ edit snippet /=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/
+            <!- <span ng-click="editing = true" ng-hide="editing"> -->
+              <!-- {{ item1.text }} -->
+            <!-- </span> -->
+            <!-- <span class="form-group" ng-show="editing" ng-submit="editing = false"> -->
+              <!-- <form class="form-inline" role="form">
+                <input type="text" class="form-control input-sm" ng-model="item.name" placeholder="Name" required/>
+                <button class="btn btn-default btn-small" type="submit">Save</button>
+              </form> -->
+            <!-- </span> -->
+<!-- =/=/=/=/=/=/=/=/=/=/ end edit snippet /=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/-->
 
-
-      <!-- <div class="row" ng-controller="Question2Controller">
-        <div class="col-md-12" ng-show="dstudentsWithoutPermission.length">
-          <h3>Without Permission Slips</h3>
+<!-- ////////////////////// display answer snippet /////////////////////////////////-->
+      <!-- <div class="row">
+        <div class="col-md-12">
+          <h2 ng-show="answers.length > 4">Question 2 Answer List</h2>
+          <p ng-show="answers.length > 4">{{ QuestionsFactory.question2 }}</p>
           <ul>
-            <li ng-repeat="item in studentsWithoutPermission = (answers | filter:{permissionSlip: false})">
-              {{item.name}} <a ng-click="addStudentWithPermissionSlip(item)"> - received permission slip -</a>
+            <li ng-show="answers.length > 4" ng-repeat="item in answers">
+              <span ng-click="editing = true" ng-hide="editing">
+                {{ item.text }}
+              </span>
+              <span class="form-group" ng-show="editing" ng-submit="editing = false">
+                <form class="form-inline" role="form">
+                  <input type="text" class="form-control input-sm" ng-model="item.name" placeholder="Name" required/>
+                  <button class="btn btn-default btn-small" type="submit">Save</button>
+                </form>
+              </span>
             </li>
           </ul>
-        </div>
-        <div class="col-md-12" ng-show="studentsWithPermission.length">
-          <h3>With Permission Slips</h3>
-          <ul>
-            <li ng-repeat="item in studentsWithPermission = (students | filter:{permissionSlip: true})">
-              {{item.name}}
-            </li>
-          </ul>
-        </div>
-      </div> -->
+        </div> -->
+        <!-- ////////////////////// end display answer snippet /////////////////////////////////-->

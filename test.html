@@ -14,7 +14,7 @@
 <body>
   <div ng-model="survey" class="container">
     <div ng-controller="QuestionsController">
-      <div ng-hide="showResults" class="row" >
+      <div ng-hide="showResults || surveyComplete" class="row" >
         <div class="col-md-4">
           <h2>Question 1</h2>
           <form ng-submit="QuestionsFactory.addQuestion1Answer()" class="form-inline" role="form">
@@ -33,11 +33,16 @@
               <label for="quest2answer" id="question">{{ QuestionsFactory.question2 }}</label><br />
               <input type="text" ng-model="QuestionsFactory.quest2answer" class="form-control" id="quest2answer" placeholder="Enter answer">
             </div>
-            <button type="submit" class="btn btn-default">Submit</button>
+            <button ng-click="surveyComplete = true" type="submit" class="btn btn-default">Submit</button>
           </form>
         </div>
       </div>
       <button ng-click="showResults = !showResults" ng-show="answers1.length > 4 && answers2.length > 4" type="submit">Toggle Results</button>
+          <span ng-show="surveyComplete">
+            <h3>Thanks!</h3>
+            <button ng-click="surveyComplete = false" type="submit" class="btn btn-default">Go back to survey</button>
+
+          </span>
 <!-- show up when user clicks show results button -->
       <div ng-show="showResults">
         <span ng-show="answers1.length > 4 && answers2.length > 4">
